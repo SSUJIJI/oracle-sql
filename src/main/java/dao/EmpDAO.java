@@ -34,6 +34,7 @@ public class EmpDAO {
 			HashMap<String,String> m = new HashMap<String,String>();
 			m.put("ename", rs.getString("ename"));
 			m.put("job", rs.getString("job"));
+			m.put("color", rs.getString("color"));
 			list.add(m);
 		}
 		
