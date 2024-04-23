@@ -4,6 +4,13 @@ public class Emp {
 	private int empno;
 	private String ename;
 	private String job;
+	private int mgr;
+	private String hiredate;
+	private double sal;
+	private double comm;
+	private int deptno;
+	private String pw;
+	private int grade;
 	public int getEmpno() {
 		return empno;
 	}
@@ -52,9 +59,16 @@ public class Emp {
 	public void setDeptno(int deptno) {
 		this.deptno = deptno;
 	}
-	private int mgr;
-	private String hiredate;
-	private double sal;
-	private double comm;
-	private int deptno;
+	public String getPw() {
+		return pw;
+	}
+	public void setPw(String pw) {
+		this.pw = pw;
+	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
 }
