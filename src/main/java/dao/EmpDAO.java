@@ -8,6 +8,44 @@ import java.util.*;
 import vo.Emp;
 
 public class EmpDAO {
+	//q005OrderBy.jsp
+	public static ArrayList<Emp> selectEmpListSort(String col, String sort) throws Exception{
+		//매개값 디버깅
+		System.out.println(col + "<--EmpDAO.selectEmpListSort param col");
+		System.out.println(sort + "<--EmpDAO.selectEmpListSort param sort"); 
+		
+		ArrayList<Emp> list = new ArrayList<>();
+		Connection conn = DBHelper.getConnection();
+		
+		/*
+		 * 동적 쿼리(쿼리 문자열이 매개값에 분기되어 차이가 나는 경우)
+		 * 없다
+		 * empno asc
+		 * empno desc
+		 * ename asc 
+		 * ename desc
+		 */
+		
+		String sql = "select empno, ename"
+				+ " from emp";
+		if(col != null && sort != null) {
+			sql = sql + " order by " +col+" " + sort;
+		}
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		System.out.println(stmt);
+		
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Emp e = new Emp();
+			e.setEmpno(rs.getInt("empno"));
+			e.setEname(rs.getString("ename"));
+			list.add(e);
+		}
+		
+		
+		conn.close();
+		return list;
+	}
 	//q004WhereIn.jsp
 	public static ArrayList<Emp> selectEmpListByGrade(ArrayList<Integer> ckList) throws Exception {
 		ArrayList<Emp> list = new ArrayList<>();
@@ -55,7 +93,7 @@ public class EmpDAO {
 			e.setGrade(rs.getInt("grade"));
 			list.add(e);
 		}
-		
+		conn.close();
 		return list;
 	}
 	
