@@ -8,6 +8,67 @@ import java.util.*;
 import vo.Emp;
 
 public class EmpDAO {
+	//q007SelfJoin.jsp
+	public static ArrayList<HashMap<String,Object>> selectSelfJoin() throws Exception {
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		
+		Connection conn = DBHelper.getConnection();
+		String sql = "select"
+				+ " e1.empno"
+				+ ", e1.ename"
+				+ ", e1.grade"
+				+ ", nvl(e2.ename, '관리자없음') mgrName"
+				+ ", nvl(e2.grade,0) mgrGrade"
+				+ " from emp e1 left outer join emp e2"
+				+ " on e1.mgr = e2.empno"
+				+ " order by e1.empno asc";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("empno", rs.getInt("empno"));
+			m.put("ename", rs.getString("ename"));
+			m.put("grade", rs.getInt("grade"));
+			m.put("mgrName", rs.getString("mgrName"));
+			m.put("mgrGrade", rs.getInt("mgrGrade"));
+			list.add(m);
+		}
+		conn.close();
+		return list;
+	}
+	//q006GroupBy.jsp
+	public static ArrayList<HashMap<String,Integer>> selectEmpSalStats()
+	throws Exception{
+		ArrayList<HashMap<String,Integer>> list = new ArrayList<>();
+		
+		Connection conn = DBHelper.getConnection();
+		String sql = "select"
+				+ " grade"
+				+ ", count(*) count"
+				+ ", sum(sal) sum"
+				+ ", avg(sal) avg"
+				+ ", max(sal) max"
+				+ ", min(sal) min"
+				+ " from emp"
+				+ " group by grade"
+				+ " order by grade asc";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			HashMap<String,Integer> m = new HashMap<String,Integer>();
+			m.put("grade", rs.getInt("grade"));
+			m.put("count", rs.getInt("count"));
+			m.put("sum", rs.getInt("sum"));
+			m.put("avg", rs.getInt("avg"));
+			m.put("max", rs.getInt("max"));
+			m.put("min", rs.getInt("min"));
+			list.add(m);
+		}
+		conn.close();
+		return list;
+	}
 	//q005OrderBy.jsp
 	public static ArrayList<Emp> selectEmpListSort(String col, String sort) throws Exception{
 		//매개값 디버깅
